@@ -28,21 +28,27 @@ def parse_args():
   parser.add_argument('-m', '--model_name', type=str, required=True,
                       choices=list(MODEL_POOL),
                       help='Name of the model for generation. (required)')
+
   parser.add_argument('-o', '--output_dir', type=str, required=True,
                       help='Directory to save the output results. (required)')
+    
   parser.add_argument('-i', '--latent_codes_path', type=str, default='',
                       help='If specified, will load latent codes from given '
                            'path instead of randomly sampling. (optional)')
+
   parser.add_argument('-n', '--num', type=int, default=1,
                       help='Number of images to generate. This field will be '
                            'ignored if `latent_codes_path` is specified. '
                            '(default: 1)')
+    
   parser.add_argument('-s', '--latent_space_type', type=str, default='z',
                       choices=['z', 'Z', 'w', 'W', 'wp', 'wP', 'Wp', 'WP'],
                       help='Latent space used in Style GAN. (default: `Z`)')
+
   parser.add_argument('-S', '--generate_style', action='store_true',
                       help='If specified, will generate layer-wise style codes '
                            'in Style GAN. (default: do not generate styles)')
+    
   parser.add_argument('-I', '--generate_image', action='store_false',
                       help='If specified, will skip generating images in '
                            'Style GAN. (default: generate images)')
@@ -75,6 +81,8 @@ def main():
     logger.info(f'  Sample latent codes randomly.')
     latent_codes = model.easy_sample(args.num, **kwargs)
   total_num = latent_codes.shape[0]
+  print(f'Latent Codes Shape: {latent_codes.shape}')
+  print(f'kwargs: {kwargs}')
 
   logger.info(f'Generating {total_num} samples.')
   results = defaultdict(list)
@@ -100,6 +108,7 @@ def main():
     if pbar.n % 1000 == 0 or pbar.n == total_num:
       logger.debug(f'  Finish {pbar.n:6d} samples.')
   pbar.close()
+  print(f'results length: {len(results)}')
 
   logger.info(f'Saving results.')
   for key, val in results.items():
@@ -110,13 +119,4 @@ def main():
 if __name__ == '__main__':
   main()
 
-//stylegan_tf_official/training/
-Name
-Last Modified
-
-
-    	
-    		
-    		
-    	
 
